@@ -1,0 +1,40 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode user-specific files
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+
+# Build products
+build/
+DerivedData/
+*.app
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# DMG build artifacts
+*.dmg
+dmg_temp/
+temp_rw.dmg
+
+# Archive exports
+Overlay */
+
+# IDE
+.claude/
+.idea/
+*.swp
+*~
+
+# CocoaPods (if used later)
+Pods/
+Podfile.lock
+
+# Swift Package Manager
+.build/
+Package.resolved
