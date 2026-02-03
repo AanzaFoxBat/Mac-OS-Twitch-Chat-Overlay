@@ -14,6 +14,17 @@ Built for macOS. Works with any game running in fullscreen windowed/borderless m
 
 Grab the latest `.dmg` from the [Releases](../../releases) page.
 
+### First launch
+
+Since this app isn't signed with an Apple Developer certificate, macOS will block it the first time you try to open it. You'll see something like *"Overlay can't be opened because Apple cannot check it for malicious software."*
+
+To fix this, right-click (or Control-click) the app and select **Open**, then click **Open** again in the dialog. You only need to do this once.
+
+If that doesn't work, open Terminal and run:
+```bash
+xattr -cr /Applications/Overlay.app
+```
+
 ## What it does
 
 - Displays Twitch chat in a floating window that stays on top of games
