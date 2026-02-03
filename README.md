@@ -74,6 +74,10 @@ Doesn't work with true exclusive fullscreen (the game takes over the display com
 
 Swift, SwiftUI, AppKit, WebKit
 
+## Made by
+
+I built this because I needed it for my own streams. If you want to see it in action or just hang out, come say hi at [twitch.tv/miikkislive](https://twitch.tv/miikkislive).
+
 ## License
 
 All Rights Reserved © 2026
