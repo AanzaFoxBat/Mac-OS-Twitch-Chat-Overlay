@@ -36,6 +36,12 @@ class AppSettings: ObservableObject {
         static let contentOpacity = "contentOpacity"
         static let minimalChatStyle = "minimalChatStyle"
         static let chatTextSize = "chatTextSize"
+        static let advancedOptionsEnabled = "advancedOptionsEnabled"
+        static let hotkeyKeyCode = "hotkeyKeyCode"
+        static let hotkeyModifiers = "hotkeyModifiers"
+        static let chatFontFamily = "chatFontFamily"
+        static let alertKeywords = "alertKeywords"
+        static let alertHighlightColor = "alertHighlightColor"
     }
 
     // MARK: - Persisted Settings
@@ -90,6 +96,42 @@ class AppSettings: ObservableObject {
         }
     }
 
+    @Published var advancedOptionsEnabled: Bool {
+        didSet {
+            defaults.set(advancedOptionsEnabled, forKey: Keys.advancedOptionsEnabled)
+        }
+    }
+
+    @Published var hotkeyKeyCode: UInt16 {
+        didSet {
+            defaults.set(Int(hotkeyKeyCode), forKey: Keys.hotkeyKeyCode)
+        }
+    }
+
+    @Published var hotkeyModifiers: UInt {
+        didSet {
+            defaults.set(hotkeyModifiers, forKey: Keys.hotkeyModifiers)
+        }
+    }
+
+    @Published var chatFontFamily: String {
+        didSet {
+            defaults.set(chatFontFamily, forKey: Keys.chatFontFamily)
+        }
+    }
+
+    @Published var alertKeywords: [String] {
+        didSet {
+            defaults.set(alertKeywords, forKey: Keys.alertKeywords)
+        }
+    }
+
+    @Published var alertHighlightColor: String {
+        didSet {
+            defaults.set(alertHighlightColor, forKey: Keys.alertHighlightColor)
+        }
+    }
+
     // MARK: - Non-persisted Settings (always default on launch)
 
     @Published var clickThroughEnabled: Bool = false
@@ -103,6 +145,14 @@ class AppSettings: ObservableObject {
         self.minimalChatStyle = defaults.object(forKey: Keys.minimalChatStyle) as? Bool ?? false
         let sizeRaw = defaults.object(forKey: Keys.chatTextSize) as? Int ?? ChatTextSize.medium.rawValue
         self.chatTextSize = ChatTextSize(rawValue: sizeRaw) ?? .medium
+
+        // Advanced options
+        self.advancedOptionsEnabled = defaults.object(forKey: Keys.advancedOptionsEnabled) as? Bool ?? false
+        self.hotkeyKeyCode = UInt16(defaults.object(forKey: Keys.hotkeyKeyCode) as? Int ?? 10) // kVK_ISO_Section
+        self.hotkeyModifiers = defaults.object(forKey: Keys.hotkeyModifiers) as? UInt ?? NSEvent.ModifierFlags.control.rawValue
+        self.chatFontFamily = defaults.string(forKey: Keys.chatFontFamily) ?? "System"
+        self.alertKeywords = defaults.object(forKey: Keys.alertKeywords) as? [String] ?? []
+        self.alertHighlightColor = defaults.string(forKey: Keys.alertHighlightColor) ?? "#FFFF00"
     }
 
     // MARK: - First Launch Detection

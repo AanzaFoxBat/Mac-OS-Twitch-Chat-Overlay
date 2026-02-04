@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import Combine
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     var overlayWindow: OverlayWindow?
@@ -7,6 +8,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     var statusBarMenu: StatusBarMenu?
     var settingsWindow: NSWindow?
     var hotkeyManager: HotkeyManager?
+    private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupOverlayWindow()
@@ -66,9 +68,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
 
     private func setupHotkeyManager() {
-        hotkeyManager = HotkeyManager { [weak self] in
-            self?.toggleClickThrough()
-        }
+        let settings = AppSettings.shared
+
+        hotkeyManager = HotkeyManager(
+            toggleAction: { [weak self] in
+                self?.toggleClickThrough()
+            },
+            keyCode: settings.hotkeyKeyCode,
+            modifiers: settings.hotkeyModifiers
+        )
+
+        // Subscribe to hotkey setting changes
+        Publishers.CombineLatest(settings.$hotkeyKeyCode, settings.$hotkeyModifiers)
+            .dropFirst() // Skip initial value
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] keyCode, modifiers in
+                self?.hotkeyManager?.updateHotkey(keyCode: keyCode, modifiers: modifiers)
+            }
+            .store(in: &cancellables)
     }
 
     private func setupMainMenu() {
@@ -77,7 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         // App Menu
         let appMenuItem = NSMenuItem()
         let appMenu = NSMenu()
-        appMenu.addItem(NSMenuItem(title: "About Overlay", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "About Overlay", action: #selector(showAboutPanel), keyEquivalent: ""))
         appMenu.addItem(NSMenuItem.separator())
         appMenu.addItem(NSMenuItem(title: "Settings...", action: #selector(openSettingsFromMenu), keyEquivalent: ","))
         appMenu.addItem(NSMenuItem.separator())
@@ -161,7 +178,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         window.styleMask = [.titled, .closable, .resizable]
         window.setContentSize(NSSize(width: 400, height: 560))
         window.minSize = NSSize(width: 400, height: 170)
-        window.maxSize = NSSize(width: 400, height: 560)
+        window.maxSize = NSSize(width: 400, height: 750)
         window.delegate = self
         window.center()
         settingsWindow = window
@@ -170,6 +187,35 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         overlayWindow?.level = .normal
         NSApplication.shared.activate(ignoringOtherApps: true)
         settingsWindow?.makeKeyAndOrderFront(nil)
+    }
+
+    @objc private func showAboutPanel() {
+        let credits = NSMutableAttributedString()
+
+        // Description
+        let description = NSAttributedString(
+            string: "Live Stream Chat Overlay for macOS\n\n",
+            attributes: [
+                .font: NSFont.systemFont(ofSize: 11),
+                .foregroundColor: NSColor.secondaryLabelColor
+            ]
+        )
+        credits.append(description)
+
+        // GitHub link
+        let linkText = NSAttributedString(
+            string: "GitHub Repository",
+            attributes: [
+                .font: NSFont.systemFont(ofSize: 11),
+                .link: URL(string: "https://github.com/miikkis-gh/Mac-OS-Twitch-Chat-Overlay")!,
+                .foregroundColor: NSColor.linkColor
+            ]
+        )
+        credits.append(linkText)
+
+        NSApplication.shared.orderFrontStandardAboutPanel(options: [
+            .credits: credits
+        ])
     }
 
     @objc private func openSettingsFromMenu() {
@@ -205,7 +251,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             170,  // URL section only
             380,  // + Appearance section
             480,  // + Click-Through section
-            560   // + Window section (full)
+            560,  // + Window section
+            750   // + Advanced Options section (expanded)
         ]
 
         let snapThreshold: CGFloat = 25

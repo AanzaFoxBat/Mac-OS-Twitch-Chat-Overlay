@@ -122,6 +122,27 @@ class OverlayViewController: NSViewController, WKNavigationDelegate {
                 self?.injectMinimalStyleIfNeeded()
             }
             .store(in: &cancellables)
+
+        settings.$chatFontFamily
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.injectMinimalStyleIfNeeded()
+            }
+            .store(in: &cancellables)
+
+        settings.$alertKeywords
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.injectKeywordAlertScript()
+            }
+            .store(in: &cancellables)
+
+        settings.$alertHighlightColor
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.injectKeywordAlertScript()
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: - Actions
@@ -185,6 +206,10 @@ class OverlayViewController: NSViewController, WKNavigationDelegate {
 
     private func injectMinimalCSS() {
         let fontSize = settings.chatTextSize.fontSize
+        let fontFamily = settings.chatFontFamily == "System"
+            ? "-apple-system, BlinkMacSystemFont, sans-serif"
+            : "'\(settings.chatFontFamily)', -apple-system, sans-serif"
+
         let css = """
         /* Hide everything except chat messages */
         .stream-chat-header,
@@ -227,6 +252,7 @@ class OverlayViewController: NSViewController, WKNavigationDelegate {
             margin: 2px 0 !important;
             background: transparent !important;
             font-size: \(fontSize)px !important;
+            font-family: \(fontFamily) !important;
         }
 
         /* Username styling */
@@ -234,6 +260,7 @@ class OverlayViewController: NSViewController, WKNavigationDelegate {
         [data-a-target="chat-message-username"] {
             font-weight: 600 !important;
             font-size: \(fontSize)px !important;
+            font-family: \(fontFamily) !important;
         }
 
         /* Message text */
@@ -241,6 +268,7 @@ class OverlayViewController: NSViewController, WKNavigationDelegate {
         [data-a-target="chat-message-text"] {
             color: white !important;
             font-size: \(fontSize)px !important;
+            font-family: \(fontFamily) !important;
         }
 
         /* Hide scrollbar */
@@ -285,6 +313,11 @@ class OverlayViewController: NSViewController, WKNavigationDelegate {
                 self?.injectMinimalCSS()
             }
         }
+
+        // Inject keyword alert script with delay for Twitch to fully render
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            self?.injectKeywordAlertScript()
+        }
     }
 
     private func injectScrollbarHidingCSS() {
@@ -305,6 +338,90 @@ class OverlayViewController: NSViewController, WKNavigationDelegate {
         """
 
         webView.evaluateJavaScript(js, completionHandler: nil)
+    }
+
+    private func injectKeywordAlertScript() {
+        guard !settings.alertKeywords.isEmpty else {
+            // Remove existing script if no keywords
+            let removeJS = """
+            var script = document.getElementById('overlay-keyword-alert');
+            if (script) script.remove();
+            """
+            webView.evaluateJavaScript(removeJS, completionHandler: nil)
+            return
+        }
+
+        let keywordsJSON = try? JSONEncoder().encode(settings.alertKeywords)
+        let keywordsString = keywordsJSON.flatMap { String(data: $0, encoding: .utf8) } ?? "[]"
+        let highlightColor = settings.alertHighlightColor
+
+        let js = """
+        (function() {
+            var existingScript = document.getElementById('overlay-keyword-alert');
+            if (existingScript) existingScript.remove();
+
+            var script = document.createElement('script');
+            script.id = 'overlay-keyword-alert';
+            script.textContent = `
+                (function() {
+                    var keywords = \(keywordsString);
+                    var highlightColor = '\(highlightColor)';
+
+                    function highlightKeywords(element) {
+                        if (!element || !element.textContent) return;
+
+                        var text = element.textContent.toLowerCase();
+                        var shouldHighlight = keywords.some(function(keyword) {
+                            return text.includes(keyword.toLowerCase());
+                        });
+
+                        if (shouldHighlight) {
+                            var messageContainer = element.closest('.chat-line__message');
+                            if (messageContainer) {
+                                messageContainer.style.backgroundColor = highlightColor + '40';
+                                messageContainer.style.borderRadius = '4px';
+                            }
+                        }
+                    }
+
+                    function processNewMessages(mutations) {
+                        mutations.forEach(function(mutation) {
+                            mutation.addedNodes.forEach(function(node) {
+                                if (node.nodeType === Node.ELEMENT_NODE) {
+                                    var messages = node.querySelectorAll('.text-fragment, [data-a-target="chat-message-text"]');
+                                    messages.forEach(highlightKeywords);
+
+                                    if (node.matches && (node.matches('.text-fragment') || node.matches('[data-a-target="chat-message-text"]'))) {
+                                        highlightKeywords(node);
+                                    }
+                                }
+                            });
+                        });
+                    }
+
+                    var chatContainer = document.querySelector('[data-a-target="chat-scroller"]') ||
+                                        document.querySelector('.chat-scrollable-area__message-container') ||
+                                        document.querySelector('.simplebar-content');
+
+                    if (chatContainer) {
+                        var observer = new MutationObserver(processNewMessages);
+                        observer.observe(chatContainer, { childList: true, subtree: true });
+
+                        // Process existing messages
+                        var existingMessages = chatContainer.querySelectorAll('.text-fragment, [data-a-target="chat-message-text"]');
+                        existingMessages.forEach(highlightKeywords);
+                    }
+                })();
+            `;
+            document.head.appendChild(script);
+        })();
+        """
+
+        webView.evaluateJavaScript(js) { _, error in
+            if let error = error {
+                print("Keyword alert script injection error: \(error)")
+            }
+        }
     }
 }
 

@@ -3,12 +3,11 @@
 .AppleDouble
 .LSOverride
 
-# Xcode project
-*.xcodeproj/
-*.xcworkspace/
-
-# Xcode user-specific files
-xcuserdata/
+# Xcode user-specific files (keep project.pbxproj and contents.xcworkspacedata)
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcshareddata/
+*.xcworkspace/xcuserdata/
 *.xcuserstate
 *.xccheckout
 *.xcscmblueprint
